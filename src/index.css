@@ -3,3 +3,34 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.timeline {
+	position: relative;
+	width: 96%;
+	height: 100%;
+}
+
+
+.timeline-base {
+	position: absolute;
+	background-color: black;
+	width: 20px;
+	height: 100%;
+	left: 50%;
+}
+
+.timeline-content-right {
+	margin-left: 54%;
+	text-align: justify;
+}
+
+.timeline-content-left {
+	margin-right: 52%;
+	text-align: right;
+}
+
+.timeline-marker {
+	color: blue;
+	width: 15px;
+	height: 5px;
+}
