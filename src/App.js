@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Timeline } from './Timeline';
+import Timeline from './Timeline';
 import { Header } from './Header';
 
 const store = {
@@ -43,6 +43,23 @@ const store = {
     }
   }
 };
+
+// const getOffsetLeft = eTag => {
+//   const e = document.getElementsByTagName(eTag)[0];
+//   console.log(e.offsetLeft);
+//   return e
+//     ? e.offsetLeft
+//     : 0
+//   ;
+// };
+//
+// const getOffsetTop = eTag => {
+//   const e = document.getElementsByTagName(eTag)[0];
+//   return e
+//     ? e.offsetTop
+//     : 0
+//   ;
+// };
 
 class App extends Component {
   render() {
