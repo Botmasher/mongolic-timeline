@@ -18,7 +18,7 @@ class TimelineNode extends React.Component {
 	  	<svg style={{
         position: 'absolute',
         zIndex: 2,
-        top: e.offsetTop,
+        top: this.props.offsetTop,
         left: e.offsetLeft
       }}>
         <path
