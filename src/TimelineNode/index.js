@@ -15,25 +15,37 @@ class TimelineNode extends React.Component {
 		const { direction } = this.props;
 		const connectorTarget = null; 	// temp - define and pass props.connectorTarget
 	  this.setState({connector: () => (
-	  	<svg style={{
-        position: 'absolute',
-        zIndex: 2,
-        top: this.props.offsetTop,
-        left: e.offsetLeft
-      }}>
-        <path
-          strokeWidth="5"
-          stroke="gray"
-          fill="none"
-          d={`
-            M ${direction === 'right' ? `0 0` : `${e.offsetWidth} 0`}
-            C ${direction === 'right' ? `50,10` : `50,10`}
-              ${direction === 'right' ? `50,100` : `50,100`}
-              ${direction === 'right' ? `100,100` : `-100,100`}
-          `}
-        />
-      </svg>)
-		});
+			<div
+				style={{
+					position: "absolute",
+					marginLeft: "-38%",
+					width: "100%",
+					height: "100%"
+				}}
+			>
+		  	<svg
+					preserveAspectRatio="xMaxyMin meet"
+					viewBox="0 0 500 150"
+					style={{
+	        	zIndex: 2,
+	        	top: this.props.offsetTop,
+	        	left: e.offsetLeft
+	      	}}
+				>
+	        <path
+	          strokeWidth="2"
+	          stroke="gray"
+	          fill="none"
+	          d={`
+	            M ${direction === 'right' ? `0 0` : `${e.offsetWidth} 0`}
+	            C ${direction === 'right' ? `50,10` : `50,10`}
+	              ${direction === 'right' ? `50,100` : `50,100`}
+	              ${direction === 'right' ? `100,100` : `-100,100`}
+	          `}
+	        />
+	      </svg>
+			</div>
+		)});
 	};
 
 	componentDidMount() {

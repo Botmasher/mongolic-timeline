@@ -19,6 +19,22 @@ class Timeline extends Component {
     console.log(`offsets: ${component.offsetTop} (top), ${component.offsetLeft} (left)`);
   };
 
+  setupConnectorDimensions = () => {
+    if (!this.refs.timeline) return;
+
+    dates = [1150, 1200, 1227, 1300, 1500, 1750, 1900];
+
+    // TODO calculate positioning for connectors along timeline
+    const timelinePosStart = this.refs.timeline.offsetTop;
+    const timelinePosEnd = timelinePosEnd + this.refs.timeline.height;
+    const dateOffsetFactors = dates.map(date => date / dates[0]);
+
+    const dateOffsets = dateOffsetFactors.map(offset => timelinePosStart * offset);
+
+    // TODO left vs right offsets? (for connecting to child node div position)
+    // or setup both svg and node in absolute?
+  };
+
   componentDidMount() {
     if (!this.refs.timeline) return;
     console.log(this.refs.timeline);
