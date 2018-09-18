@@ -13,7 +13,15 @@ class TimelineNode extends React.Component {
 		console.log(e);
 		const { direction } = this.props;
 		const connectorTarget = null; 	// temp - define and pass props.connectorTarget
-	  this.setState({connector: () => (
+
+		// example SVG viewbox settings for resizing
+		// <svg
+		// 	viewBox="0 0 500 150"
+		// 	preserveAspectRatio={direction === 'right' ? "xMinYMin meet" : "xMaxYMin meet"}
+		//	x="50"
+		//	y="0"
+		// >
+		this.setState({connector: () => (
 			<div
 				style={{
 					position: "absolute",
@@ -23,8 +31,6 @@ class TimelineNode extends React.Component {
 				}}
 			>
 		  	<svg
-					preserveAspectRatio={direction === 'right' ? "xMinyMin meet" : "xMaxyMin meet"}
-					viewBox="0 0 500 150"
 					style={{
 	        	zIndex: 4,
 	        	top: 0,
@@ -36,7 +42,7 @@ class TimelineNode extends React.Component {
 	          stroke="gray"
 	          fill="none"
 	          d={`
-	            M ${direction === 'right' ? `0 0` : `500 0`}
+	            M ${direction === 'right' ? `0 0` : `0 0`}
 	            C ${direction === 'right' ? `50,10` : `450,10`}
 	              ${direction === 'right' ? `50,50` : `450,50`}
 	              ${direction === 'right' ? `100,50` : `400,50`}
@@ -48,8 +54,8 @@ class TimelineNode extends React.Component {
 	};
 
 	componentDidMount() {
-		this.props.drawConnector(this.nodeRef.current);
-		this.drawConnector(this.nodeRef.current);
+		//this.props.drawConnector(this.nodeRef.current);
+		//this.drawConnector(this.nodeRef.current);
 	}
 
 	// NOTE remove -test from class name to apply defined App.css styles
@@ -61,16 +67,16 @@ class TimelineNode extends React.Component {
 			>
 				{this.state.connector && this.state.connector()}
 				{direction === 'right' && (
-					<div className="timeline-marker-test" ref={this.nodeRef}>
+					<div className="timeline-marker-test" style={styles.timelineMarker}>
 					</div>
 				)}
-				<div className="timeline-content-test">
+				<div className="timeline-content-test" style={styles.timelineContent}>
 					<h2>{title}</h2>
 					<p><em>{year}</em></p>
 					<p>{content}</p>
 				</div>
 				{direction === 'left' && (
-					<div className="timeline-marker-test" ref={this.nodeRef}>
+					<div className="timeline-marker-test" style={styles.timelineMarker}>
 					</div>
 				)}
 			</div>
@@ -81,8 +87,16 @@ class TimelineNode extends React.Component {
 const styles = {
 	timelineNode: {
 		position: 'relative',
+		display: 'flex',
 		zIndex: 5,
 		width: '50%',
+	},
+	timelineContent: {
+		width: '80%',
+		padding: 10
+	},
+	timelineMarker: {
+		width: '20%'
 	}
 };
 

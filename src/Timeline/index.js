@@ -19,7 +19,7 @@ class Timeline extends Component {
     console.log(`offsets: ${component.offsetTop} (top), ${component.offsetLeft} (left)`);
   };
 
-  setupConnectorDimensions = () => {
+  setupConnectorDimensionsThenDraw = () => {
     if (!this.refs.timeline || this.state.createdOffsets) return;
 
     const dates = this.props.entries.map(entry => entry.year);
@@ -40,12 +40,23 @@ class Timeline extends Component {
       dateOffsets,
       leftOffset,
       rightOffset
+    }, () => this.drawConnectors());
+  };
+
+  drawConnectors = () => {
+    Object.values(this.refs).map(e => {
+      if (e._reactInternalFiber) {
+        const timelineNode = e._reactInternalFiber.child.stateNode;
+        console.log(timelineNode);
+        // TODO setup pairs of dateOffsets and timelineNode date divs
+        //  - currently mapping over dates in data for one then refs for other
+        // TODO draw svg line from dateOffsets to nodes
+      }
     });
   };
 
   componentDidMount() {
-    console.log(this.refs.timeline);
-    this.setupConnectorDimensions();
+    this.setupConnectorDimensionsThenDraw();
   }
 
   render() {
@@ -56,6 +67,7 @@ class Timeline extends Component {
         <div className="timeline-nodes-test">
           {entries.map((entry, i) => (
             <TimelineNode
+              ref={`timelineNode${i}`}
               offsetTop={dateOffsets[i]}
               offsetLeft={leftOffset}
               offsetRight={rightOffset}
