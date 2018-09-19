@@ -8,13 +8,17 @@ class Timeline extends Component {
       createdOffsets: false,
       dateOffsets: [],
       leftOffset: '',
-      rightOffset: ''
+      rightOffset: '',
+      sVGs: []
     };
   }
 
-  // manage refs for timeline components
-  // TODO use refs to access component positions and draw paths between them
-  // NOTE could just call a draw function directly from div?
+  // TODO manage timeline connectors
+  // - define svg draw function that just needs position from timelineNodes
+  // - store drawn svgs as state
+  // - iterate through state and update svgs per timeline node
+  // NOTE this strategy separates connectors from timelineNode ui
+
   drawConnector = component => {
     console.log(`offsets: ${component.offsetTop} (top), ${component.offsetLeft} (left)`);
   };
