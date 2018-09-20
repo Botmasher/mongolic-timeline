@@ -9,7 +9,7 @@ class Timeline extends Component {
       dateOffsets: [],
       leftOffset: '',
       rightOffset: '',
-      sVGs: []
+      sVGPoints: []
     };
   }
 
@@ -19,11 +19,19 @@ class Timeline extends Component {
   // - iterate through state and update svgs per timeline node
   // NOTE this strategy separates connectors from timelineNode ui
 
-  drawConnector = component => {
-    console.log(`offsets: ${component.offsetTop} (top), ${component.offsetLeft} (left)`);
+  storeSVGPoints = (origX, origY, insertX, insertY) => {
+    this.setState({
+      sVGPoints: [
+        ...this.state.sVGPoints,
+        {
+          origin: { x: origX, y: origY },
+          target: { x: insertX, y: insertY }
+        }
+      ]
+    })
   };
 
-  setupConnectorDimensionsThenDraw = () => {
+  setConnectorOffsets = () => {
     if (!this.refs.timeline || this.state.createdOffsets) return;
 
     const dates = this.props.entries.map(entry => entry.year);
@@ -44,38 +52,54 @@ class Timeline extends Component {
       dateOffsets,
       leftOffset,
       rightOffset
-    }, () => this.drawConnectors());
-  };
-
-  drawConnectors = () => {
-    Object.values(this.refs).map(e => {
-      if (e._reactInternalFiber) {
-        const timelineNode = e._reactInternalFiber.child.stateNode;
-        console.log(timelineNode);
-        // TODO setup pairs of dateOffsets and timelineNode date divs
-        //  - currently mapping over dates in data for one then refs for other
-        // TODO draw svg line from dateOffsets to nodes
-      }
     });
   };
 
   componentDidMount() {
-    this.setupConnectorDimensionsThenDraw();
+    this.setConnectorOffsets();
   }
 
   render() {
     const { entries } = this.props;
-    const { dateOffsets, leftOffset, rightOffset } = this.state;
+    const { createdOffsets, dateOffsets, leftOffset, rightOffset, sVGPoints } = this.state;
+
     return (
       <div className="timeline-test" style={styles.timeline} ref="timeline">
+        <div style={styles.timelineDraws}>
+          {sVGPoints.map(pointSet => (
+            <svg
+              key={`timeline-connector-${pointSet.origin.x}-${pointSet.origin.y}-${pointSet.target.x}-${pointSet.target.x}`}
+              viewBox="0 0 500 150"
+              preserveAspectRatio="xMinYMin meet"
+              x="50"
+              y="0"
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0
+              }}
+            >
+              <path
+                strokeWidth={2}
+                stroke="gray"
+                fill="none"
+                d={`
+                  M ${pointSet.origin.x} ${pointSet.origin.y}
+                  C ${pointSet.origin.x+50}, ${pointSet.origin.y+10}
+                    ${pointSet.origin.x+50}, ${pointSet.origin.y+50}
+                    ${pointSet.target.x}, ${pointSet.target.y}
+                `}
+              />
+            </svg>
+          ))}
+        </div>
         <div className="timeline-nodes-test">
-          {entries.map((entry, i) => (
+          {createdOffsets && entries.map((entry, i) => (
             <TimelineNode
-              ref={`timelineNode${i}`}
               offsetTop={dateOffsets[i]}
               offsetLeft={leftOffset}
               offsetRight={rightOffset}
-              drawConnector={this.drawConnector}
+              storeSVGPoints={this.storeSVGPoints}
               key={entry.id}
               direction={i % 2 ? "left" : "right"}
               title={entry.title}
@@ -95,17 +119,24 @@ const styles = {
     position: 'relative',
     width: '100%',
     height: '100%',
-    backgroundColor: 'cyan',
     zIndex: 0
+  },
+  timelineDraws: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'gray',
+    opacity: 0.1,
+    zIndex: 1
   },
   timelineBar: {
     position: 'absolute',
-    width: '1%',
+    width: '2%',
     top: 0,
-    left: '50%',
+    left: '49%',
     height: '100%',
     backgroundColor: 'black',
-    zIndex: 1
+    zIndex: 2
   }
 };
 
