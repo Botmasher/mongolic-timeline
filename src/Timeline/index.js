@@ -1,118 +1,42 @@
-import React, { Component } from 'react';
+import React from 'react';
 import TimelineNode from '../TimelineNode';
+//import { moment } from 'moment';
 
-class Timeline extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      createdOffsets: false,
-      dateOffsets: [],
-      leftOffset: '',
-      rightOffset: '',
-      sVGPoints: []
-    };
-  }
+// TODO format dates and support different calendars
+//  - "1000 BCE" from -1, "1000 CE" from 1
 
-  // TODO manage timeline connectors
-  // - define svg draw function that just needs position from timelineNodes
-  // - store drawn svgs as state
-  // - iterate through state and update svgs per timeline node
-  // NOTE this strategy separates connectors from timelineNode ui
+const Timeline = ({ entries }) => {
 
-  storeSVGPoints = (origX, origY, insertX, insertY) => {
-    this.setState({
-      sVGPoints: [
-        ...this.state.sVGPoints,
-        {
-          origin: { x: origX, y: origY },
-          target: { x: insertX, y: insertY }
-        }
-      ]
-    })
+  const offsetDate = (year, origin, range) => {
+    const dateRatio = (year - origin) / range;
+    return dateRatio;
   };
 
-  setConnectorOffsets = () => {
-    if (!this.refs.timeline || this.state.createdOffsets) return;
+  const dateRange = entries.reduce((extremeYears, entry) => ({
+    low: Math.min(entry.year, extremeYears.low),
+    high: Math.max(entry.year, extremeYears.high)
+  }), {low: entries[0].year, high: entries[0].year});
 
-    const dates = this.props.entries.map(entry => entry.year);
+  const dateDelta = dateRange.high - dateRange.low;
 
-    // TODO calculate positioning for connectors along timeline
-    const timelinePosStart = this.refs.timeline.offsetTop;
-    const timelinePosEnd = timelinePosEnd + this.refs.timeline.height;
-    const dateOffsetFactors = dates.map(date => date / dates[0]);
-
-    const dateOffsets = dateOffsetFactors.map(offset => offset);
-
-    // TODO left vs right offsets? (for connecting to child node div position)
-    // or setup both svg and node in absolute?
-    const rightOffset = 0;
-    const leftOffset = Math.round(this.refs.timeline.width * 0.5);
-    this.setState({
-      createdOffsets: true,
-      dateOffsets,
-      leftOffset,
-      rightOffset
-    });
-  };
-
-  componentDidMount() {
-    this.setConnectorOffsets();
-  }
-
-  render() {
-    const { entries } = this.props;
-    const { createdOffsets, dateOffsets, leftOffset, rightOffset, sVGPoints } = this.state;
-
-    return (
-      <div className="timeline-test" style={styles.timeline} ref="timeline">
-        <div style={styles.timelineDraws}>
-          {sVGPoints.map(pointSet => (
-            <svg
-              key={`timeline-connector-${pointSet.origin.x}-${pointSet.origin.y}-${pointSet.target.x}-${pointSet.target.x}`}
-              viewBox="0 0 500 150"
-              preserveAspectRatio="xMinYMin meet"
-              x="50"
-              y="0"
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 0
-              }}
-            >
-              <path
-                strokeWidth={2}
-                stroke="gray"
-                fill="none"
-                d={`
-                  M ${pointSet.origin.x} ${pointSet.origin.y}
-                  C ${pointSet.origin.x+50}, ${pointSet.origin.y+10}
-                    ${pointSet.origin.x+50}, ${pointSet.origin.y+50}
-                    ${pointSet.target.x}, ${pointSet.target.y}
-                `}
-              />
-            </svg>
-          ))}
-        </div>
-        <div className="timeline-nodes-test">
-          {createdOffsets && entries.map((entry, i) => (
-            <TimelineNode
-              offsetTop={dateOffsets[i]}
-              offsetLeft={leftOffset}
-              offsetRight={rightOffset}
-              storeSVGPoints={this.storeSVGPoints}
-              key={entry.id}
-              direction={i % 2 ? "left" : "right"}
-              title={entry.title}
-              year={`${entry.year}`}
-              content={entry.content}
-            />
-          ))}
-        </div>
-        <div className="timeline-base-test" style={styles.timelineBar}>&nbsp;</div>
+  return (
+    <div className="timeline-test" style={styles.timeline}>
+      <div className="timeline-nodes-test">
+        {entries.map((entry, i) => (
+          <TimelineNode
+            key={entry.id}
+            direction={i % 2 ? "left" : "right"}
+            title={entry.title}
+            year={`${entry.year}`}
+            content={entry.content}
+            offsetTop={() => offsetDate(entry.year, dateRange.low, dateDelta)}
+          />
+        ))}
       </div>
-    );
-  }
-}
+      <div className="timeline-base-test" style={styles.timelineBar}>&nbsp;</div>
+    </div>
+  );
+};
 
 const styles = {
   timeline: {
@@ -120,14 +44,6 @@ const styles = {
     width: '100%',
     height: '100%',
     zIndex: 0
-  },
-  timelineDraws: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'gray',
-    opacity: 0.1,
-    zIndex: 1
   },
   timelineBar: {
     position: 'absolute',
