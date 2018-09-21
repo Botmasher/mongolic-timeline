@@ -1,49 +1,76 @@
 import React from 'react';
 
-const TimelineNode = ({ direction, title, year, content, offsetTop }) => (
+const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
+
+	const makeTimelineMarker = useConnector => {
+		if (useConnector) {
+			return(
+				<div style={styles.timelineMarker}>
+					<div style={styles.timelineConnectorAbove}></div>
+					<div style={styles.timelineConnectorBelow}></div>
+				</div>
+			);
+		} else {
+			return(
+				<div style={styles.timelineMarker}>
+				</div>
+			);
+		}
+	};
+
 	// NOTE remove -test from class name to apply defined App.css styles
-	<div className={`timeline-node-${direction}-test`}
-		style={{
-			...styles.timelineNode,
-			top: offsetTop,
-			left: direction === 'right' ? '50%' : 0
-		}}
-	>
-		<div
-			className="timeline-marker-test"
-			style={{...styles.timelineMarker, width: direction === 'left' ? '10%' : '20%'}}>
-		</div>
-		<div
-			className="timeline-content-test"
-			style={styles.timelineContent}
+	return(
+		<div className={`timeline-node-${direction}-test`}
+			style={{
+				...styles.timelineNode,
+				top: offsetTop,
+				left: direction === 'right' ? '50%' : 0
+			}}
 		>
-			<h2>{title}</h2>
-			<p><em>{year}</em></p>
-			<p>{content}</p>
+			{direction === 'right' ? makeTimelineMarker(true) : makeTimelineMarker(false)}
+			<div
+				className="timeline-content-test"
+				style={{
+					...styles.timelineContent,
+					borderLeft: direction === 'right' ? '2px solid black' : 0,
+					borderRight: direction === 'left' ? '2px solid black' : 0
+				}}
+			>
+				<h2>{title}</h2>
+				<p><em>{year}</em></p>
+				<p>{content}</p>
+			</div>
+			{direction === 'left' ? makeTimelineMarker(true) : makeTimelineMarker(false)}
 		</div>
-		<div
-			className="timeline-marker-test"
-			style={{...styles.timelineMarker, width: direction === 'right' ? '10%' : '20%'}}>
-		</div>
-	</div>
-);
+	);
+}
 
 const styles = {
 	timelineNode: {
 		position: 'relative',
 		display: 'flex',
+		flexDirection: 'row',
 		zIndex: 5,
 		width: '50%',
 		backgroundColor: '#aaff00',
 		opacity: 0.2,
 	},
 	timelineContent: {
-		width: '70%',
+		flex: 3,
 		padding: 10
 	},
 	timelineMarker: {
-		backgroundColor: 'red',
-		opacity: 0.2
+		flex: 1,
+		display: 'flex',
+		flexDirection: 'column',
+		backgroundColor: 'red'
+	},
+	timelineConnectorAbove: {
+		flex: 1,
+		borderBottom: '2px solid black'
+	},
+	timelineConnectorBelow: {
+		flex: 1
 	}
 };
 
