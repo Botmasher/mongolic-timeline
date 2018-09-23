@@ -8,6 +8,7 @@ import TimelineNode from '../TimelineNode';
 const Timeline = ({ entries }) => {
 
   const offsetDate = (year, origin, range) => {
+    console.log(year - origin);
     const dateRatio = (year - origin) / range;
     return dateRatio;
   };
@@ -21,38 +22,39 @@ const Timeline = ({ entries }) => {
 
   return (
     <div className="timeline-test" style={styles.timeline}>
-      <div className="timeline-nodes-test">
-        {entries.map((entry, i) => (
-          <TimelineNode
-            key={entry.id}
-            direction={i % 2 ? "left" : "right"}
-            title={entry.title}
-            year={`${entry.year}`}
-            content={entry.content}
-            offsetTop={() => offsetDate(entry.year, dateRange.low, dateDelta)}
-          />
-        ))}
+      <div className="timeline-column-left-test" style={styles.timelineColumn}>&nbsp;</div>
+      <div className="timeline-column-center-test" style={styles.timelineBar}>&nbsp;</div>
+      <div className="timeline-column-right-test">
+        <div className="timeline-nodes-test" style={styles.timelineColumn}>
+          {entries.map((entry, i) => (
+            <TimelineNode
+              key={entry.id}
+              direction={i % 2 ? "left" : "right"}
+              title={entry.title}
+              year={`${entry.year}`}
+              content={entry.content}
+              offsetTop={offsetDate(entry.year, dateRange.low, dateDelta)}
+            />
+          ))}
+        </div>
       </div>
-      <div className="timeline-base-test" style={styles.timelineBar}>&nbsp;</div>
     </div>
   );
 };
 
 const styles = {
   timeline: {
-    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
     width: '100%',
-    height: '100%',
-    zIndex: 0
+    height: '100%'
   },
   timelineBar: {
-    position: 'absolute',
-    width: '2%',
-    top: 0,
-    left: '49%',
-    height: '100%',
-    backgroundColor: 'black',
-    zIndex: 2
+    width: '4%',
+    backgroundColor: 'black'
+  },
+  timelineColumn: {
+    width: '48%',
   }
 };
 

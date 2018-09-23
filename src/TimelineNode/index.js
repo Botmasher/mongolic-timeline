@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
-
+	console.log(offsetTop);
 	const makeTimelineMarker = useConnector => {
 		if (useConnector) {
 			return(
@@ -23,8 +23,7 @@ const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
 		<div className={`timeline-node-${direction}-test`}
 			style={{
 				...styles.timelineNode,
-				top: offsetTop,
-				left: direction === 'right' ? '50%' : 0
+				left: direction === 'right' ? '-100%' : 0
 			}}
 		>
 			{direction === 'right' ? makeTimelineMarker(true) : makeTimelineMarker(false)}
@@ -47,11 +46,9 @@ const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
 
 const styles = {
 	timelineNode: {
-		position: 'relative',
+		width: '100%',
 		display: 'flex',
 		flexDirection: 'row',
-		zIndex: 5,
-		width: '50%',
 		backgroundColor: '#aaff00',
 		opacity: 0.2,
 	},
