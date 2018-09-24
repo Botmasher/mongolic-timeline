@@ -21,10 +21,7 @@ const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
 	// NOTE remove -test from class name to apply defined App.css styles
 	return(
 		<div className={`timeline-node-${direction}-test`}
-			style={{
-				...styles.timelineNode,
-				left: direction === 'right' ? '-100%' : 0
-			}}
+			style={styles.timelineNode}
 		>
 			{direction === 'right' ? makeTimelineMarker(true) : makeTimelineMarker(false)}
 			<div
@@ -48,19 +45,17 @@ const styles = {
 	timelineNode: {
 		width: '100%',
 		display: 'flex',
-		flexDirection: 'row',
-		backgroundColor: '#aaff00',
-		opacity: 0.2,
+		flexDirection: 'row'
 	},
 	timelineContent: {
 		flex: 3,
-		padding: 10
+		padding: 10,
+		backgroundColor: '#aaff00'
 	},
 	timelineMarker: {
 		flex: 1,
 		display: 'flex',
-		flexDirection: 'column',
-		backgroundColor: 'red'
+		flexDirection: 'column'
 	},
 	timelineConnectorAbove: {
 		flex: 1,

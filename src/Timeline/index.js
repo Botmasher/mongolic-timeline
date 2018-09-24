@@ -18,43 +18,52 @@ const Timeline = ({ entries }) => {
     high: Math.max(entry.year, extremeYears.high)
   }), {low: entries[0].year, high: entries[0].year});
 
+  const createTimelineNode = (entry, i, dateDiff) => (
+    <TimelineNode
+      key={entry.id}
+      direction={i % 2 ? "left" : "right"}
+      title={entry.title}
+      year={`${entry.year}`}
+      content={entry.content}
+      offsetTop={offsetDate(entry.year, dateRange.low, dateDiff)}
+    />
+  );
+
   const dateDelta = dateRange.high - dateRange.low;
 
   return (
     <div className="timeline-test" style={styles.timeline}>
-      <div className="timeline-column-left-test" style={styles.timelineColumn}>&nbsp;</div>
-      <div className="timeline-column-center-test" style={styles.timelineBar}>&nbsp;</div>
-      <div className="timeline-column-right-test">
-        <div className="timeline-nodes-test" style={styles.timelineColumn}>
-          {entries.map((entry, i) => (
-            <TimelineNode
-              key={entry.id}
-              direction={i % 2 ? "left" : "right"}
-              title={entry.title}
-              year={`${entry.year}`}
-              content={entry.content}
-              offsetTop={offsetDate(entry.year, dateRange.low, dateDelta)}
-            />
-          ))}
+      {entries.map((entry, i) => (
+        <div className="timeline-row" style={styles.timelineRow}>
+          <div className="timeline-right-test" style={styles.timelineColumn}>{i % 2 ? createTimelineNode(entry, i, dateDelta) : ' '}</div>
+          <div className="timeline-center-test" style={styles.timelineBar}>&nbsp;</div>
+          <div className="timeline-left-test" style={styles.timelineColumn}>{!(i % 2) && createTimelineNode(entry, i, dateDelta)}</div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };
 
 const styles = {
   timeline: {
+    maxWidth: '100%',
+    width: '100%'
+  },
+  timelineRow: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
-    height: '100%'
+    margin: '0 auto'
   },
   timelineBar: {
-    width: '4%',
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
     backgroundColor: 'black'
   },
   timelineColumn: {
-    width: '48%',
+    flexGrow: 25,
+    flexShrink: 25,
+    flexBasis: 0
   }
 };
 
