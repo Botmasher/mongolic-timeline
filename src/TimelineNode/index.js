@@ -1,18 +1,18 @@
 import React from 'react';
 
 const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
-	console.log(offsetTop);
+
 	const makeTimelineMarker = useConnector => {
 		if (useConnector) {
 			return(
-				<div style={styles.timelineMarker}>
+				<div style={styles.timelineNodeSide}>
 					<div style={styles.timelineConnectorAbove}></div>
 					<div style={styles.timelineConnectorBelow}></div>
 				</div>
 			);
 		} else {
 			return(
-				<div style={styles.timelineMarker}>
+				<div style={styles.timelineNodeSide}>
 				</div>
 			);
 		}
@@ -23,6 +23,7 @@ const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
 		<div className={`timeline-node-${direction}-test`}
 			style={styles.timelineNode}
 		>
+			{direction === 'right' ? <div style={styles.timelineNodeSymbol}></div> : ''}
 			{direction === 'right' ? makeTimelineMarker(true) : makeTimelineMarker(false)}
 			<div
 				className="timeline-content-test"
@@ -52,10 +53,11 @@ const styles = {
 		padding: 10,
 		backgroundColor: '#aaff00'
 	},
-	timelineMarker: {
+	timelineNodeSide: {
 		flex: 1,
 		display: 'flex',
-		flexDirection: 'column'
+		flexDirection: 'column',
+		backgroundColor: 'green'
 	},
 	timelineConnectorAbove: {
 		flex: 1,
