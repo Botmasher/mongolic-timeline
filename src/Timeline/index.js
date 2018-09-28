@@ -1,7 +1,7 @@
 import React from 'react';
 import TimelineNode from '../TimelineNode';
 import TimelineMarker from '../TimelineMarker';
-import { offsetDate } from '../utils/timeline';
+import { yearOffset } from '../utils/timeline';
 
 const Timeline = ({ entries }) => {
 
@@ -17,7 +17,7 @@ const Timeline = ({ entries }) => {
       title={entry.title}
       year={`${entry.year}`}
       content={entry.content}
-      offsetTop={offsetDate(entry.year, dateRange.low, dateDiff)}
+      offsetTop={yearOffset(entry.year, dateRange.low, dateDiff)}
     />
   );
 
