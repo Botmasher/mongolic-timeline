@@ -1,18 +1,9 @@
 import React from 'react';
 import TimelineNode from '../TimelineNode';
 import TimelineMarker from '../TimelineMarker';
-//import { moment } from 'moment';
-
-// TODO format dates and support different calendars
-//  - "1000 BCE" from -1, "1000 CE" from 1
+import { offsetDate } from '../utils/timeline';
 
 const Timeline = ({ entries }) => {
-
-  const offsetDate = (year, origin, range) => {
-    console.log(year - origin);
-    const dateRatio = (year - origin) / range;
-    return dateRatio;
-  };
 
   const dateRange = entries.reduce((extremeYears, entry) => ({
     low: Math.min(entry.year, extremeYears.low),
