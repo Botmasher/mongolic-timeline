@@ -1,5 +1,5 @@
 import React from 'react';
-import { TimelineNodeContainer } from '../TimelineNode/container';
+import TimelineNodeContainer from '../TimelineNode/Container';
 import { yearOffset } from '../utils/timeline';
 
 const Timeline = ({ entries }) => {

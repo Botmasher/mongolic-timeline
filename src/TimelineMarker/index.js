@@ -6,7 +6,7 @@ const TimelineMarker = ({ shape, hasBorder }) => (
     <div style={{
       ...styles.timelineMarkerShape,
       borderRadius: shape === 'circle' ? '50%' : 0,
-      border: hasBorder ? '1px solid black' : 0
+      border: hasBorder ? '2px solid black' : 0
     }}>
       &nbsp;
     </div>
@@ -23,8 +23,10 @@ const styles = {
     height: '100%'
   },
   timelineMarkerShape: {
-    backgroundColor: colors.red,
-    transform: 'scale(5, 1.5)'
+    backgroundColor: colors.white,
+    position: 'absolute',
+    width: 20,
+    height: 18
   }
 };
 

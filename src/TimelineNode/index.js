@@ -29,8 +29,8 @@ const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
 				className="timeline-content-test"
 				style={{
 					...styles.timelineContent,
-					borderLeft: direction === 'right' ? '2px solid black' : 0,
-					borderRight: direction === 'left' ? '2px solid black' : 0
+					borderLeft: direction === 'right' ? '3px solid gray' : 0,
+					borderRight: direction === 'left' ? '3px solid gray' : 0
 				}}
 			>
 				<h2>{title}</h2>
@@ -51,13 +51,14 @@ const styles = {
 	timelineContent: {
 		flex: 3,
 		padding: 10,
-		backgroundColor: '#aaff00'
+		backgroundColor: '#def',
+		borderRadius: '4%',
+		boxShadow: '8px 8px 15px #aaa'
 	},
 	timelineNodeSide: {
 		flex: 1,
 		display: 'flex',
-		flexDirection: 'column',
-		backgroundColor: 'green'
+		flexDirection: 'column'
 	},
 	timelineConnectorAbove: {
 		flex: 1,

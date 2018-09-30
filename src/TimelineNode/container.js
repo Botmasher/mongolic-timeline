@@ -2,30 +2,45 @@ import React from 'react';
 import TimelineNode from './';
 import TimelineMarker from '../TimelineMarker';
 
-export const TimelineNodeContainer = ({ entry, direction, offsetTop }) => {
-  const createTimelineNode = () => (
+class TimelineNodeContainer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  createTimelineNode = () => (
     <TimelineNode
-      direction={direction}
-      title={entry.title}
-      year={`${entry.year}`}
-      content={entry.content}
-      offsetTop={offsetTop}
+      direction={this.props.direction}
+      title={this.props.entry.title}
+      year={`${this.props.entry.year}`}
+      content={this.props.entry.content}
+      offsetTop={this.props.offsetTop}
     />
   );
-  
-  return(
-    <div className="timeline-row-test" style={styles.timelineRow}>
-      <div className="timeline-right-test" style={styles.timelineColumn}>
-        {direction === 'left' ? createTimelineNode() : ' '}
+
+  componentDidMount() {
+    window.scroll(() => (
+      window.scrollTop() > this.props.offsetTop
+      ? this.refs.tnode.fadeIn()
+      : this.refs.tnode.fadeOut()
+    ));
+  }
+
+  render() {
+    const { entry, direction, offsetTop } = this.props;
+    return(
+      <div className="timeline-row-test" style={styles.timelineRow}>
+        <div className="timeline-right-test" style={styles.timelineColumn}>
+          {direction === 'left' ? this.createTimelineNode() : ' '}
+        </div>
+        <div className="timeline-center-test" style={styles.timelineBar}>
+          <TimelineMarker shape={`circle`} hasBorder={true} />
+        </div>
+        <div className="timeline-left-test" style={styles.timelineColumn}>
+          {direction === 'right' ? this.createTimelineNode() : ' '}
+        </div>
       </div>
-      <div className="timeline-center-test" style={styles.timelineBar}>
-        <TimelineMarker shape={`circle`} hasBorder={true} />
-      </div>
-      <div className="timeline-left-test" style={styles.timelineColumn}>
-        {direction === 'right' ? createTimelineNode() : ' '}
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
 const styles = {
@@ -46,3 +61,5 @@ const styles = {
     flexBasis: 0
   }
 };
+
+export default TimelineNodeContainer;
