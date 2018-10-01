@@ -1,10 +1,14 @@
 import React from 'react';
 import TimelineNode from './';
 import TimelineMarker from '../TimelineMarker';
+import _ from 'lodash';
 
 class TimelineNodeContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      visible: false
+    };
   }
 
   createTimelineNode = () => (
@@ -17,18 +21,37 @@ class TimelineNodeContainer extends React.Component {
     />
   );
 
+  fade = (out=false) => {
+    if (this.state.visible && !this.out) return;
+    this.setState({visible: true}, () => {
+      const e = this.refs.timelineNode;
+      let opacity = out ? 1.0 : 0.0;
+      const opacityTarget = out ? 0.0 : 1.0;
+      const fx = setInterval(() => {
+        if (opacityTarget - opacity <= 0.0) e.style.opacity = opacityTarget;
+        e.style.opacity = opacity;
+        e.style.filter = `alpha(opacity=${opacity * 100})`;
+        opacity += (out ? -0.05 : 0.05);
+      }, 70);
+      console.log(`fading in ${this.refs.timelineNode}`);
+    });
+  };
+
   componentDidMount() {
-    window.scroll(() => (
-      window.scrollTop() > this.props.offsetTop
-      ? this.refs.tnode.fadeIn()
-      : this.refs.tnode.fadeOut()
-    ));
+    this.refs.timelineNode.style.opacity = 0.0;
+    window.addEventListener('scroll', _.throttle(() => {
+      console.log(window.screen);
+      window.scrollMaxY > this.props.offsetTop
+        ? this.fade()
+        : console.log(`not fading...`)
+      ;
+    }, 900));
   }
 
   render() {
     const { entry, direction, offsetTop } = this.props;
     return(
-      <div className="timeline-row-test" style={styles.timelineRow}>
+      <div className="timeline-row-test" style={styles.timelineRow} ref="timelineNode">
         <div className="timeline-right-test" style={styles.timelineColumn}>
           {direction === 'left' ? this.createTimelineNode() : ' '}
         </div>
