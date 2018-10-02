@@ -17,41 +17,32 @@ class TimelineNodeContainer extends React.Component {
       title={this.props.entry.title}
       year={`${this.props.entry.year}`}
       content={this.props.entry.content}
-      offsetTop={this.props.offsetTop}
     />
   );
 
-  fade = (out=false) => {
-    if (this.state.visible && !this.out) return;
-    this.setState({visible: true}, () => {
-      const e = this.refs.timelineNode;
-      let opacity = out ? 1.0 : 0.0;
-      const opacityTarget = out ? 0.0 : 1.0;
-      const fx = setInterval(() => {
-        if (opacityTarget - opacity <= 0.0) e.style.opacity = opacityTarget;
-        e.style.opacity = opacity;
-        e.style.filter = `alpha(opacity=${opacity * 100})`;
-        opacity += (out ? -0.05 : 0.05);
-      }, 70);
-      console.log(`fading in ${this.refs.timelineNode}`);
-    });
-  };
+  setVisibility = isVisible => this.setState({visible: isVisible});
 
   componentDidMount() {
     this.refs.timelineNode.style.opacity = 0.0;
     window.addEventListener('scroll', _.throttle(() => {
-      console.log(window.screen);
-      window.scrollMaxY > this.props.offsetTop
-        ? this.fade()
-        : console.log(`not fading...`)
-      ;
-    }, 900));
+      console.log(`window: ${window.pageYOffset}, element: ${this.refs.timelineNode.offsetTop}`);
+      window.pageYOffset > (this.refs.timelineNode.offsetTop - (window.scrollMaxY * 0.92)) && (
+        this.setVisibility(true)
+      )
+    }, 300));
   }
 
   render() {
-    const { entry, direction, offsetTop } = this.props;
+    const { entry, direction } = this.props;
     return(
-      <div className="timeline-row-test" style={styles.timelineRow} ref="timelineNode">
+      <div
+        className={`timeline-row${this.state.visible ? ' timeline-row-fadein' : ''}`}
+        ref="timelineNode"
+        style={{
+          ...styles.timelineRow,
+          opacity: this.state.visible ? 100 : 0,
+        }}
+      >
         <div className="timeline-right-test" style={styles.timelineColumn}>
           {direction === 'left' ? this.createTimelineNode() : ' '}
         </div>

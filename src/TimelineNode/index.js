@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TimelineNode = ({ direction, title, year, content, offsetTop }) => {
+const TimelineNode = ({ direction, title, year, content }) => {
 
 	const makeTimelineMarker = useConnector => {
 		if (useConnector) {

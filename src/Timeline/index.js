@@ -20,7 +20,6 @@ const Timeline = ({ entries }) => {
           key={entry.id}
           entry={entry}
           direction={i % 2 ? 'right' : 'left'}
-          offsetTop={yearOffset(entry.year, dateRange.low, dateDelta)}
         />
       ))}
     </div>
@@ -30,7 +29,8 @@ const Timeline = ({ entries }) => {
 const styles = {
   timeline: {
     maxWidth: '100%',
-    width: '100%'
+    width: '100%',
+    marginBottom: 30
   }
 };
 
