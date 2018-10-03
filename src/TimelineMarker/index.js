@@ -25,6 +25,7 @@ const styles = {
   timelineMarkerShape: {
     backgroundColor: colors.white,
     position: 'absolute',
+    zIndex: 10,
     width: 20,
     height: 18
   }

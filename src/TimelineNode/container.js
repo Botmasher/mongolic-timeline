@@ -23,10 +23,9 @@ class TimelineNodeContainer extends React.Component {
   setVisibility = isVisible => this.setState({visible: isVisible});
 
   componentDidMount() {
-    this.refs.timelineNode.style.opacity = 0.0;
     window.addEventListener('scroll', _.throttle(() => {
       console.log(`window: ${window.pageYOffset}, element: ${this.refs.timelineNode.offsetTop}`);
-      window.pageYOffset > (this.refs.timelineNode.offsetTop - (window.scrollMaxY * 0.92)) && (
+      window.pageYOffset > (this.refs.timelineNode.offsetTop - (window.scrollMaxY * 1)) && (
         this.setVisibility(true)
       )
     }, 300));
@@ -36,20 +35,20 @@ class TimelineNodeContainer extends React.Component {
     const { entry, direction } = this.props;
     return(
       <div
-        className={`timeline-row${this.state.visible ? ' timeline-row-fadein' : ''}`}
+        className="timeline-row"
         ref="timelineNode"
         style={{
-          ...styles.timelineRow,
-          opacity: this.state.visible ? 100 : 0,
+          opacity: 1.0,
+          ...styles.timelineRow
         }}
       >
-        <div className="timeline-right-test" style={styles.timelineColumn}>
+        <div className={this.state.visible ? 'timeline-node-fadein' : 'timeline-node-transparent'} style={styles.timelineColumn}>
           {direction === 'left' ? this.createTimelineNode() : ' '}
         </div>
         <div className="timeline-center-test" style={styles.timelineBar}>
           <TimelineMarker shape={`circle`} hasBorder={true} />
         </div>
-        <div className="timeline-left-test" style={styles.timelineColumn}>
+        <div className={this.state.visible ? 'timeline-node-fadein' : 'timeline-node-transparent'} style={styles.timelineColumn}>
           {direction === 'right' ? this.createTimelineNode() : ' '}
         </div>
       </div>
@@ -67,12 +66,14 @@ const styles = {
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 0,
+    paddingTop: 50,
     backgroundColor: 'black'
   },
   timelineColumn: {
     flexGrow: 60,
     flexShrink: 60,
-    flexBasis: 0
+    flexBasis: 0,
+    paddingTop: 50
   }
 };
 
