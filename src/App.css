@@ -17,7 +17,7 @@
 .timeline-row {}
 
 .timeline-node-fadein {
-  animation: fade 1.5s ease-in forwards;
+  animation: fade 0.9s ease-in forwards;
 }
 
 .timeline-node-transparent {

@@ -20,14 +20,19 @@ class TimelineNodeContainer extends React.Component {
     />
   );
 
-  setVisibility = isVisible => this.setState({visible: isVisible});
+  checkVisibilityFromScroll = (scrollOffset, nodeOffset, screenHeight) => {
+    const pixelsEarlier = (screenHeight * 0.6);
+    console.log(`window: ${scrollOffset}, element: ${nodeOffset}`);
+    scrollOffset > (nodeOffset - pixelsEarlier) && this.setState({visible: true});
+  };
 
   componentDidMount() {
     window.addEventListener('scroll', _.throttle(() => {
-      console.log(`window: ${window.pageYOffset}, element: ${this.refs.timelineNode.offsetTop}`);
-      window.pageYOffset > (this.refs.timelineNode.offsetTop - (window.scrollMaxY * 1)) && (
-        this.setVisibility(true)
-      )
+       // window.innerHeight, window.screen.availHeight
+      // pageYOffset          pixels scrolled so far from top
+      // innerHeight          total inner window y pixels
+      // screen.availHeight   available screen y pixels
+      this.checkVisibilityFromScroll(window.pageYOffset, this.refs.timelineNode.offsetTop, window.screen.availHeight);
     }, 300));
   }
 
