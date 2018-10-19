@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Timeline from './Timeline';
+import TimelineContainer from './Timeline/Container';
 import { Header } from './Header';
 import { timelineEntries } from './store';
 
 const App = () => (
   <div className="App">
     <Header />
-    <Timeline entries={Object.values(timelineEntries)} />
+    <TimelineContainer entries={Object.values(timelineEntries)} />
   </div>
 );
 

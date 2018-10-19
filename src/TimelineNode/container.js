@@ -27,13 +27,17 @@ class TimelineNodeContainer extends React.Component {
   };
 
   componentDidMount() {
-    window.addEventListener('scroll', _.throttle(() => {
-       // window.innerHeight, window.screen.availHeight
+    const callback = () => {
+      // window.innerHeight, window.screen.availHeight
       // pageYOffset          pixels scrolled so far from top
       // innerHeight          total inner window y pixels
       // screen.availHeight   available screen y pixels
-      this.checkVisibilityFromScroll(window.pageYOffset, this.refs.timelineNode.offsetTop, window.screen.availHeight);
-    }, 300));
+      const scrollOffset = window.pageYOffset;
+      const nodeOffset = this.refs.timelineNode.offsetTop;
+      const height = window.screen.availHeight;
+      this.checkVisibilityFromScroll(scrollOffset, nodeOffset, height);
+    };
+    window.addEventListener('scroll', _.throttle(callback, 300));
   }
 
   render() {
