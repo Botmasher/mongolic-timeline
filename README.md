@@ -1,6 +1,6 @@
-# Simple Timeline Generator
+# Timeline Generator
 
-A brief timeline condensing the complicated academic understanding of the timing and relationships betwreen Middle Mongol, Written Mongol, Proto-Mongolic and modern Mongolic languages including Mongolian proper.
+A basic chronological timeline maker that visualizes stored content in connected nodes along a line.
 
 ## Motivation
 
